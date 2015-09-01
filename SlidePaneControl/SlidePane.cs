@@ -196,7 +196,7 @@ namespace SlidePaneControl
             if (rightSlideButton != null)
                 rightSlideButton.Click += (ss, ee) =>
                 {
-                    if (this.LeftPane.IsAvailable)
+                    if (this.RightPane.IsAvailable)
                     {
                         this.IsRightPaneOpen = !this.IsRightPaneOpen;
                     }
