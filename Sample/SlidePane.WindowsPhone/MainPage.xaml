@@ -48,7 +48,7 @@
             </сontrol:ContentPane>
         </сontrol:SlidePane.LeftPane>
 
-        <Grid Background="MediumBlue">
+        <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -68,6 +68,12 @@
                        VerticalAlignment="Top"
                        FontSize="50"
                        Text="Main content" />
+
+            <TextBox Grid.Column="0"
+                     Grid.ColumnSpan="2"
+                     Margin="50 200"
+                     VerticalAlignment="Bottom"
+                     PointerPressed="UIElement_OnPointerPressed" />
 
             <Button Grid.Column="1"
                     Margin="10"

@@ -1,5 +1,6 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
 namespace SlidePane
@@ -21,6 +22,11 @@ namespace SlidePane
         private void ButtonRight_OnClick(object sender, RoutedEventArgs e)
         {
             this.SlidePane.IsRightPaneOpen = !this.SlidePane.IsRightPaneOpen;
+        }
+
+        private void UIElement_OnPointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }
