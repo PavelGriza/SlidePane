@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using SlidePaneControl.Extensions;
@@ -53,7 +56,11 @@ namespace SlidePaneControl
 
             this.Container.ManipulationStarted += (s, e) =>
             {
-
+                var elements = GetCapturedElements(s as UIElement);
+                foreach (var element in elements)
+                {
+                    element.ReleasePointerCaptures();
+                }
             };
 
             this.Container.ManipulationDelta += (s, e) =>
@@ -67,6 +74,59 @@ namespace SlidePaneControl
                 var x = e.Cumulative.Translation.X;
                 FinalizeSliding(x);
             };
+        }
+
+        private static List<UIElement> GetCapturedElements(UIElement element)
+        {
+            List<UIElement> elements = new List<UIElement>();
+
+            if (element.PointerCaptures != null)
+            {
+                elements.Add(element);
+            }
+
+            if (element is ContentPresenter)
+            {
+                var content = ((ContentPresenter) element).Content as UIElement;
+
+                if (content != null)
+                {
+                    elements.AddRange(GetCapturedElements(content));
+                }
+            }
+
+            if (element is ContentControl)
+            {
+                var content = ((ContentControl)element).Content as UIElement;
+
+                if (content != null)
+                {
+                    elements.AddRange(GetCapturedElements(content));
+                }
+            }
+
+            if (element is Panel)
+            {
+                foreach (UIElement child in ((Panel)element).Children)
+                {
+                    elements.AddRange(GetCapturedElements(child));
+                }
+            }
+
+            if (element is Border)
+            {
+                elements.AddRange(GetCapturedElements(((Border)element).Child));
+            }
+
+            if (element is ItemsControl)
+            {
+                foreach (UIElement item in ((ItemsControl)element).Items.Where(i => i is UIElement))
+                {
+                    elements.AddRange(GetCapturedElements(item));
+                }
+            }
+
+            return elements;
         }
 
         private void PerformSliding(double x)
