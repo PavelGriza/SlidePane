@@ -12,7 +12,6 @@ namespace SlidePaneControl
         #region Fields
 
         public const string RootGridTemplateName = "RootGrid";
-        private GestureRecognizer _gr = new GestureRecognizer();
         private double _leftDragDistance; // the min distance of translation for finishing open/close process
         private double _rightDragDistance; // the min distance of translation for finishing open/close process
         private double _leftSlidingWidth; // max width of sliding
@@ -45,64 +44,33 @@ namespace SlidePaneControl
             }
         }
 
-        #region Container EventHandlers
+        #region Private Methodes
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        private void InitGestureInteraction()
         {
-            _gr.Tapped += GrOnTapped;
-            _gr.ManipulationStarted += GrOnManipulationStarted;
-            _gr.ManipulationUpdated += GrOnManipulationUpdated;
-            _gr.ManipulationCompleted += GrOnManipulationCompleted;
+            this.Container = (FrameworkElement)GetTemplateChild(RootGridTemplateName);
+            this.Container.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateRailsX;
+
+            this.Container.ManipulationStarted += (s, e) =>
+            {
+
+            };
+
+            this.Container.ManipulationDelta += (s, e) =>
+            {
+                var x = e.Cumulative.Translation.X;
+                PerformSliding(x);
+            };
+
+            this.Container.ManipulationCompleted += (s, e) =>
+            {
+                var x = e.Cumulative.Translation.X;
+                FinalizeSliding(x);
+            };
         }
 
-        private void OnUnloaded(object sender, RoutedEventArgs e)
+        private void PerformSliding(double x)
         {
-            _gr.Tapped -= GrOnTapped;
-            _gr.ManipulationStarted -= GrOnManipulationStarted;
-            _gr.ManipulationUpdated -= GrOnManipulationUpdated;
-            _gr.ManipulationCompleted -= GrOnManipulationCompleted;
-        }
-
-        private void OnPointerCanceled(object sender, PointerRoutedEventArgs e)
-        {
-            _gr.CompleteGesture();
-            e.Handled = true;
-        }
-
-        private void OnPointerPressed(object sender, PointerRoutedEventArgs e)
-        {
-            _gr.ProcessDownEvent(e.GetCurrentPoint(null));
-            this.Container.CapturePointer(e.Pointer);
-            e.Handled = true;
-        }
-
-        private void OnPointerMoved(object sender, PointerRoutedEventArgs e)
-        {
-            _gr.ProcessMoveEvents(e.GetIntermediatePoints(null));
-            e.Handled = true;
-        }
-
-        private void OnPointerReleased(object sender, PointerRoutedEventArgs e)
-        {
-            _gr.ProcessUpEvent(e.GetCurrentPoint(null));
-            e.Handled = true;
-        }
-
-        #endregion
-
-        #region Gesture Recognition
-
-        private void GrOnTapped(GestureRecognizer sender, TappedEventArgs args)
-        {
-        }
-
-        private void GrOnManipulationStarted(GestureRecognizer sender, ManipulationStartedEventArgs args)
-        {
-        }
-
-        private void GrOnManipulationUpdated(GestureRecognizer sender, ManipulationUpdatedEventArgs args)
-        {
-            var x = args.Cumulative.Translation.X;
             double delta;
             TranslateTransform transform;
 
@@ -152,9 +120,8 @@ namespace SlidePaneControl
             this.Container.RenderTransform = transform;
         }
 
-        private void GrOnManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
+        private void FinalizeSliding(double x)
         {
-            var x = args.Cumulative.Translation.X;
             _currentX = x;
 
             if (x > 0)
@@ -229,28 +196,6 @@ namespace SlidePaneControl
                     }
                 }
             }
-        }
-
-        #endregion
-
-        #region Private Methodes
-
-        private void InitGestureInteraction()
-        {
-            //this.Container = this;
-
-            this.Container = (FrameworkElement)GetTemplateChild(RootGridTemplateName);
-            this.Container.Loaded += OnLoaded;
-            this.Container.Unloaded += OnUnloaded;
-            this.Container.PointerCanceled += OnPointerCanceled;
-            this.Container.PointerPressed += OnPointerPressed;
-            this.Container.PointerMoved += OnPointerMoved;
-            this.Container.PointerReleased += OnPointerReleased;
-
-            _gr.CrossSlideHorizontally = true;
-
-            _gr.GestureSettings = GestureSettings.Tap |
-                                  GestureSettings.ManipulationTranslateRailsX;
         }
 
         private void OpenLeftPane()

@@ -18,32 +18,26 @@
         <сontrol:SlidePane.LeftPane>
             <сontrol:ContentPane ButtonVisibility="Visible">
                 <Grid Background="Bisque">
-                    <ListView Margin="0">
-                        <ListViewItem>
-                            <Rectangle Fill="Green" />
-                        </ListViewItem>
-                        <ListViewItem>
-                            <Rectangle Fill="Yellow" />
-                        </ListViewItem>
-                        <ListViewItem>
-                            <Rectangle Fill="Brown" />
-                        </ListViewItem>
-                        <ListViewItem>
+                    <ListBox>
+                        <ListBoxItem>
                             <Rectangle Fill="White" />
-                        </ListViewItem>
-                        <ListViewItem>
+                        </ListBoxItem>
+                        <ListBoxItem>
                             <Rectangle Fill="Green" />
-                        </ListViewItem>
-                        <ListViewItem>
+                        </ListBoxItem>
+                        <ListBoxItem>
                             <Rectangle Fill="Yellow" />
-                        </ListViewItem>
-                        <ListViewItem>
-                            <Rectangle Fill="Brown" />
-                        </ListViewItem>
-                        <ListViewItem>
-                            <Rectangle Fill="White" />
-                        </ListViewItem>
-                    </ListView>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <Rectangle Fill="Blue" />
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <Rectangle Fill="Aqua" />
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <Rectangle Fill="SkyBlue" />
+                        </ListBoxItem>
+                    </ListBox>
                 </Grid>
             </сontrol:ContentPane>
         </сontrol:SlidePane.LeftPane>
@@ -53,34 +47,81 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-            <Button Grid.Column="0"
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       FontSize="50"
+                       Text="Main content" />
+
+            <TextBox Grid.Row="1"
+                     Grid.Column="0"
+                     Grid.ColumnSpan="2"
+                     Margin="10"
+                     VerticalAlignment="Bottom"
+                     PointerPressed="UIElement_OnPointerPressed" />
+
+            <Button Grid.Row="2"
+                    Grid.Column="0"
                     Margin="10"
                     HorizontalAlignment="Right"
                     Click="ButtonLeft_OnClick"
                     Content="Left"
                     FontSize="40" />
 
-            <TextBlock Grid.Column="0"
-                       Grid.ColumnSpan="2"
-                       Margin="50"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Top"
-                       FontSize="50"
-                       Text="Main content" />
-
-            <TextBox Grid.Column="0"
-                     Grid.ColumnSpan="2"
-                     Margin="50 200"
-                     VerticalAlignment="Bottom"
-                     PointerPressed="UIElement_OnPointerPressed" />
-
-            <Button Grid.Column="1"
+            <Button Grid.Row="2"
+                    Grid.Column="1"
                     Margin="10"
                     HorizontalAlignment="Left"
                     Click="ButtonRight_OnClick"
                     Content="Right"
                     FontSize="40" />
+
+            <ListView Grid.Row="3"
+                      Grid.Column="0"
+                      Margin="10 0">
+                <ListViewItem>
+                    <Rectangle Fill="Aqua" />
+                </ListViewItem>
+                <ListViewItem>
+                    <Rectangle Fill="Blue" />
+                </ListViewItem>
+                <ListViewItem>
+                    <Rectangle Fill="Chartreuse" />
+                </ListViewItem>
+                <ListViewItem>
+                    <Rectangle Fill="DarkGreen" />
+                </ListViewItem>
+                <ListViewItem>
+                    <Rectangle Fill="Fuchsia" />
+                </ListViewItem>
+            </ListView>
+
+            <ListBox Grid.Row="3" Grid.Column="1">
+                <ListBoxItem>
+                    <Rectangle Fill="Aqua" />
+                </ListBoxItem>
+                <ListBoxItem>
+                    <Rectangle Fill="Blue" />
+                </ListBoxItem>
+                <ListBoxItem>
+                    <Rectangle Fill="Chartreuse" />
+                </ListBoxItem>
+                <ListBoxItem>
+                    <Rectangle Fill="DarkGreen" />
+                </ListBoxItem>
+                <ListBoxItem>
+                    <Rectangle Fill="Fuchsia" />
+                </ListBoxItem>
+            </ListBox>
 
         </Grid>
 
